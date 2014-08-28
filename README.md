@@ -1,4 +1,4 @@
 REDCap
 ======
 
-Scripts related to REDCap project
+Scripts related to REDCap projects
