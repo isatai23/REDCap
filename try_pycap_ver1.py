@@ -40,12 +40,27 @@ srsData = srs.export_records(fields = srs_fields_intrst)
 print "The first project has %d records" % len(familyData)
 print "The second project has %d records" % len(srsData)
 
+'''iterate the records
+
+The output of export_records is a list of dictionaries
+
+for each dictionary in familyData list
+    for each dictionary in srsData list
+        if family individual id == srs individual id
+            if sex = male
+                print individual id, sex, srs2 total T score'''
+
+for i in range(0, len(familyData)):
+    for j in range(0, len(srsData)):
+        if familyData[i]['individual_id'] == srsData[j]['record_id']:
+            if familyData[i]['sex'] == '0':
+                print familyData[i]['individual_id'], familyData[i]['sex'], srsData[j]['record_id'], srsData[j]['srs2_tscore']
+           
+           
+    
 
 
-print familyData[0]
-print srsData[0]
 
-#iterate the records
 
 
 
