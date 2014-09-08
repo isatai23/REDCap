@@ -4,6 +4,7 @@
 # Import PyCap module
 
 from redcap import Project, RedcapError
+import csv
 
 # Define the URL of our REDCap installation and the token of the project we are requesting a response.
 
@@ -40,6 +41,17 @@ srsData = srs.export_records(fields = srs_fields_intrst)
 print "The first project has %d records" % len(familyData)
 print "The second project has %d records" % len(srsData)
 
+def csv_writer(data, path):
+    '''
+    
+    Write data to a CSV file path.
+    '''
+    with open(path, "wb") as csv_file:
+        writer = csv.writer(csv_file, delimiter=',')
+        for line in data:
+            writer.writerow(line)
+            
+            
 '''iterate the records
 
 The output of export_records is a list of dictionaries
@@ -49,13 +61,18 @@ for each dictionary in familyData list
         if family individual id == srs individual id
             if sex = male
                 print individual id, sex, srs2 total T score'''
-
+data = [['individual_id','sex','individual_id','srs2_tscore']]
 for i in range(0, len(familyData)):
     for j in range(0, len(srsData)):
         if familyData[i]['individual_id'] == srsData[j]['record_id']:
             if familyData[i]['sex'] == '0':
-                print familyData[i]['individual_id'], familyData[i]['sex'], srsData[j]['record_id'], srsData[j]['srs2_tscore']
-           
+                new_data=[ familyData[i]['individual_id'], familyData[i]['sex'], srsData[j]['record_id'], srsData[j]['srs2_tscore']]
+                data.append(new_data)
+                
+            
+path  = "query_output.csv"
+csv_writer(data, path)
+         
            
     
 
