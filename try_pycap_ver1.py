@@ -1,7 +1,6 @@
-
 # Filename: try_pycap_ver1.py
 
-# Import PyCap module
+# Import PyCap and csv module
 
 from redcap import Project, RedcapError
 import csv
@@ -11,6 +10,7 @@ import csv
 URL = 'https://poa-redcap.med.yale.edu/api/'
 TOKEN = '0BD89F3E896E72920DF3CFAC8DD739D7'
 TOKEN2 = 'CAF3713EF2307C80BAD789DBAFBAA8C7'
+
 # Call PyCap Project function
 
 family = Project(URL, TOKEN)
@@ -41,10 +41,19 @@ srsData = srs.export_records(fields = srs_fields_intrst)
 print "The first project has %d records" % len(familyData)
 print "The second project has %d records" % len(srsData)
 
+#Edit a single field of the first record of srs table
+
+srsData[1]['awr_raw']=45
+response = srs.import_records(srsData)
+print response['count']
+
 def csv_writer(data, path):
     '''
     
     Write data to a CSV file path.
+    data: a list of lists
+    path: output file name. Such as output.csv
+    output: a csv file
     '''
     with open(path, "wb") as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
@@ -52,15 +61,17 @@ def csv_writer(data, path):
             writer.writerow(line)
             
             
-'''iterate the records
+'''
 
+iterate the records to do "select srs.srs2_tscore where family.sex = male".
 The output of export_records is a list of dictionaries
-
 for each dictionary in familyData list
     for each dictionary in srsData list
         if family individual id == srs individual id
             if sex = male
-                print individual id, sex, srs2 total T score'''
+                print individual id, sex, srs2 total T score
+'''
+                
 data = [['individual_id','sex','individual_id','srs2_tscore']]
 for i in range(0, len(familyData)):
     for j in range(0, len(srsData)):
